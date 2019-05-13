@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 RUN apt update \
- && apt install stress curl wget net-tools vim dnsutils nodejs -y
+ && apt install stress curl wget net-tools vim dnsutils nodejs iputils-ping -y
 ADD server.js /server.js
 
 EXPOSE 80
