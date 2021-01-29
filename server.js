@@ -2,6 +2,7 @@
 let http = require('http');
 let server = http.createServer();
 let port = process.env.SERVER_PORT || 80;
+let sleep_msec = process.env.SLEEP_MSEC || 0;
 
 let LIVENESS_STATUS = process.env.LIVENESS_STATUS || 200;
 let READINESS_STATUS = process.env.READINESS_STATUS || 200;
@@ -25,23 +26,26 @@ server.on('request', function (req, res) {
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 break;
         }
-        res.end(JSON.stringify({
-            "body": data,
-            "env": {
-                "K8S_UID":                  process.env.K8S_UID                  || "<undefined>",
-                "K8S_NODE_NAME":            process.env.K8S_NODE_NAME            || "<undefined>",
-                "K8S_HOST_IP":              process.env.K8S_HOST_IP              || "<undefined>",
-                "K8S_POD_NAME":             process.env.K8S_POD_NAME             || "<undefined>",
-                "K8S_NAMESPACE":            process.env.K8S_NAMESPACE            || "<undefined>",
-                "K8S_POD_IP":               process.env.K8S_POD_IP               || "<undefined>",
-                "K8S_SERVICE_ACCOUNT_NAME": process.env.K8S_SERVICE_ACCOUNT_NAME || "<undefined>",
-                "K8S_CONTAINER_NAME":       process.env.K8S_CONTAINER_NAME       || "<undefined>",
-                "K8S_CPU_REQUEST":          process.env.K8S_CPU_REQUEST          || "<undefined>",
-                "K8S_CPU_LIMIT":            process.env.K8S_CPU_LIMIT            || "<undefined>",
-                "K8S_MEMORY_REQUEST":       process.env.K8S_MEMORY_REQUEST       || "<undefined>",
-                "K8S_MEMORY_LIMIT":         process.env.K8S_MEMORY_LIMIT         || "<undefined>"
-            }
-        }));
+        setTimeout(() => {
+            res.end(JSON.stringify({
+                "body": data,
+                "env": {
+                    "K8S_UID":                  process.env.K8S_UID                  || "<undefined>",
+                    "K8S_NODE_NAME":            process.env.K8S_NODE_NAME            || "<undefined>",
+                    "K8S_HOST_IP":              process.env.K8S_HOST_IP              || "<undefined>",
+                    "K8S_POD_NAME":             process.env.K8S_POD_NAME             || "<undefined>",
+                    "K8S_NAMESPACE":            process.env.K8S_NAMESPACE            || "<undefined>",
+                    "K8S_POD_IP":               process.env.K8S_POD_IP               || "<undefined>",
+                    "K8S_SERVICE_ACCOUNT_NAME": process.env.K8S_SERVICE_ACCOUNT_NAME || "<undefined>",
+                    "K8S_CONTAINER_NAME":       process.env.K8S_CONTAINER_NAME       || "<undefined>",
+                    "K8S_CPU_REQUEST":          process.env.K8S_CPU_REQUEST          || "<undefined>",
+                    "K8S_CPU_LIMIT":            process.env.K8S_CPU_LIMIT            || "<undefined>",
+                    "K8S_MEMORY_REQUEST":       process.env.K8S_MEMORY_REQUEST       || "<undefined>",
+                    "K8S_MEMORY_LIMIT":         process.env.K8S_MEMORY_LIMIT         || "<undefined>",
+                    "SLEEP_MSEC":               process.env.SLEEP_MSEC               || "<undefined>",
+                }
+            }));
+        }, sleep_msec);
     });
 });
 
